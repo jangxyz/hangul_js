@@ -137,6 +137,12 @@ Note that attaching a vowel to Hangul syllable that has jongseong takes the jong
 > h.attachIfHangul('하', h1)
 '하ᄒ'
 
+> var k1 = chr(4352)    // 'HANGUL CHOSEONG KIEUK'
+> d = h.attachIfHangul('도', k1)
+'도ᄀ'
+> h.attachIfHangul(d, k1)
+'도ᄁ'
+
 > var b1 = chr(4359)    // 'HANGUL CHOSEONG PIEUP'
 > var u2 = chr(4462)    // 'HANGUL JUNGSEONG U'
 > var b3 = chr(4536)    // 'HANGUL CHOSEONG PIEUP'
@@ -152,5 +158,4 @@ Note that attaching a vowel to Hangul syllable that has jongseong takes the jong
 
 ```
 The `도깨비불 현상' does not appear on 3-bul family.
-
 
