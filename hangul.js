@@ -700,7 +700,7 @@ var code = {
     isHangul3Jongseong: function(c) { return 4520 <= c&&c <= 4601; },
 
     isHangulDot       : function(c) { return c == 12334 || c == 12335; },
-    isHangulLetter    : function(c) { return 12593 <= c&&c <= 12686; },
+    isHangul2Letter    : function(c) { return 12593 <= c&&c <= 12686; },
     isHangul2Consonant: function(c) { 
         return (12593 <= c&&c <= 12622) || ( 12645 <= c&&c <= 12678);
     },
@@ -916,7 +916,7 @@ letter.isHangul3Choseong  = function(letter) { return code.isHangul3Choseong(ord
 letter.isHangul3Jungseong = function(letter) { return code.isHangul3Jungseong(ord(letter)); };
 letter.isHangul3Jongseong = function(letter) { return code.isHangul3Jongseong(ord(letter)); };
 letter.isHangulDot       = function(letter) { return code.isHangulDot(ord(letter)); };
-letter.isHangulLetter    = function(letter) { return code.isHangulLetter(ord(letter)); };
+letter.isHangul2Letter    = function(letter) { return code.isHangul2Letter(ord(letter)); };
 letter.isHangul2Consonant= function(letter) { return code.isHangul2Consonant(ord(letter)); },
 letter.isHangul2Vowel    = function(letter) { return code.isHangul2Vowel(ord(letter)); },
 letter.isHangulSyllable  = function(letter) { return code.isHangulSyllable(ord(letter)); };
@@ -944,6 +944,9 @@ letter.split  = function(letter) {
 
 //
 letter.attachIfHangul = function(word, suffix) {
+	if (word === '') {
+		return suffix;
+	}
     var tail = word[word.length-1];
 
     // just paste two string if not hangul
@@ -951,44 +954,64 @@ letter.attachIfHangul = function(word, suffix) {
         return word + suffix;
     }
 
-    // 3
-    // + jungseong
+    // choseong(3) + jungseong(3)
     if (letter.isHangul3Choseong(tail) && letter.isHangul3Jungseong(suffix[0])) {
-
-    // + jongseong
-    } else if (letter.isHangul3Jungseong(tail) && letter.isHangul3Jongseong(suffix[0])) {
-
-    // 2
-    // consonant + vowel
-    } else if (letter.isHangul2Consonant(tail) && letter.isHangul2Vowel(suffix[0])) {
+        return word.substring(0,word.length-1) + letter.merge(tail, suffix[0]);
+	}
+	// reverse: jungseong(3) + choseong(3)
+	else if (letter.isHangul3Choseong(suffix[0]) && letter.isHangul3Jungseong(tail)) {
+        return word.substring(0,word.length-1) + letter.merge(suffix[0], tail);
+	}
+    // jongsongless syllable + jongseong(3)
+    else if (letter.isHangulSyllable(tail) && !letter.hasJongseong(tail) && letter.isHangul3Jongseong(suffix[0])) {
+        return word.substring(0,word.length-1) + letter.merge(tail, tail, suffix[0]);
+	}
+    // consonant + vowel(2)
+    else if (letter.isHangul2Consonant(tail) && letter.isHangul2Vowel(suffix[0])) {
         return word.substring(0,word.length-1) + letter.merge(tail, suffix[0]);
     } 
-    // jongsongless syllable + consonant
+    // jongsongless syllable + consonant(2)
     else if (letter.isHangulSyllable(tail) && !letter.hasJongseong(tail) && letter.isHangul2Consonant(suffix[0])) {
         return word.substring(0,word.length-1) + letter.merge(tail, tail, suffix[0]);
-    }
+    } 
+	// jongsongful syllable + vowel(2)
+    else if (letter.isHangulSyllable(tail) && letter.hasJongseong(tail) && letter.isHangul2Vowel(suffix[0])) {
+		var splits = letter.split(tail);
+		var prevSyllable = letter.merge(splits[0], splits[1]);
+		return word.substring(0,word.length-1) + prevSyllable + letter.merge(splits[2], suffix[0]);
+    } 
+	
+	//
+	else {
+		return word + suffix;
+	}
 };
 
 
 // exports
-exports.code   = code;
+exports.code = code;
+
+exports.ord = ord;
+exports.chr = chr;
 
 exports.isHangul3Choseong    = letter.isHangul3Choseong;
 exports.isHangul3Jungseong   = letter.isHangul3Jungseong;
 exports.isHangul3Jongseong   = letter.isHangul3Jongseong;
 exports.isHangulDot          = letter.isHangulDot;
-exports.isHangulLetter       = letter.isHangulLetter;
+exports.isHangul2Letter       = letter.isHangul2Letter;
 exports.isHangul2Consonant   = letter.isHangul2Consonant;
 exports.isHangul2Vowel       = letter.isHangul2Vowel;
 exports.isHangulSyllable     = letter.isHangulSyllable;
 exports.isHangul             = letter.isHangul;
 exports.hasJongseong         = letter.hasJongseong;
+
 exports.consonantToChoseong  = letter.consonantToChoseong;
 exports.consonantToJongseong = letter.consonantToJongseong;
 exports.vowelToJungseong     = letter.vowelToJungseong;
 exports.choseongToConsonant  = letter.choseongToConsonant;
 exports.jongseongToConsonant = letter.jongseongToConsonant;
 exports.jungseongToVowel     = letter.jungseongToVowel;
+
 exports.merge3               = letter.merge3;
 exports.merge                = letter.merge;
 exports.split                = letter.split;
