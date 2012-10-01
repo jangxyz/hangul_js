@@ -338,22 +338,284 @@ var _hangul_orig_names = {
     'HANGUL SINGLE DOT TONE MARK': 12334
 };
 
-var ssangChoseong = {
-    4364: 4365, // 'HANGUL CHOSEONG CIEUC'  =>  'HANGUL CHOSEONG SSANGCIEUC' 
-    4370: 4440, // 'HANGUL CHOSEONG HIEUH'  =>  'HANGUL CHOSEONG SSANGHIEUH' 
-    4363: 4423, // 'HANGUL CHOSEONG IEUNG'  =>  'HANGUL CHOSEONG SSANGIEUNG' 
-    4352: 4353, // 'HANGUL CHOSEONG KIYEOK' =>  'HANGUL CHOSEONG SSANGKIYEOK'
-    4354: 4372, // 'HANGUL CHOSEONG NIEUN'  =>  'HANGUL CHOSEONG SSANGNIEUN' 
-    4359: 4360, // 'HANGUL CHOSEONG PIEUP'  =>  'HANGUL CHOSEONG SSANGPIEUP' 
-    4357: 4377, // 'HANGUL CHOSEONG RIEUL'  =>  'HANGUL CHOSEONG SSANGRIEUL' 
-    4361: 4362, // 'HANGUL CHOSEONG SIOS'   =>  'HANGUL CHOSEONG SSANGSIOS'  
-    4355: 4356  // 'HANGUL CHOSEONG TIKEUT' =>  'HANGUL CHOSEONG SSANGTIKEUT'
+var doubleChoseongMap = {
+    4385: {  4352:  4386    ,   // HANGUL CHOSEONG PIEUP-SIOS-KIYEOK
+             4355:  4387    ,   // HANGUL CHOSEONG PIEUP-SIOS-TIKEUT
+             4364:  4390    ,   // HANGUL CHOSEONG PIEUP-SIOS-CIEUC
+             4359:  4388    ,   // HANGUL CHOSEONG PIEUP-SIOS-PIEUP
+             4368: 43378  } ,   // HANGUL CHOSEONG PIEUP-SIOS-THIEUTH
+    4352: {  4352:  4353    ,   // HANGUL CHOSEONG SSANGKIYEOK
+             4355:  4442  } ,   // HANGUL CHOSEONG KIYEOK-TIKEUT
+    4355: {  4352:  4375    ,   // HANGUL CHOSEONG TIKEUT-KIYEOK
+             4355:  4356    ,   // HANGUL CHOSEONG SSANGTIKEUT
+             4357:  4446    ,   // HANGUL CHOSEONG TIKEUT-RIEUL
+             4359: 43361    ,   // HANGUL CHOSEONG TIKEUT-PIEUP
+             4358: 43360    ,   // HANGUL CHOSEONG TIKEUT-MIEUM
+             4361: 43362    ,   // HANGUL CHOSEONG TIKEUT-SIOS
+             4364: 43363  } ,   // HANGUL CHOSEONG TIKEUT-CIEUC
+    4354: {  4352:  4371    ,   // HANGUL CHOSEONG NIEUN-KIYEOK
+             4355:  4373    ,   // HANGUL CHOSEONG NIEUN-TIKEUT
+             4354:  4372    ,   // HANGUL CHOSEONG SSANGNIEUN
+             4359:  4374    ,   // HANGUL CHOSEONG NIEUN-PIEUP
+             4361:  4443    ,   // HANGUL CHOSEONG NIEUN-SIOS
+             4364:  4444    ,   // HANGUL CHOSEONG NIEUN-CIEUC
+             4370:  4445  } ,   // HANGUL CHOSEONG NIEUN-HIEUH
+    4357: {  4353: 43365    ,   // HANGUL CHOSEONG RIEUL-SSANGKIYEOK
+             4352: 43364    ,   // HANGUL CHOSEONG RIEUL-KIYEOK
+             4355: 43366    ,   // HANGUL CHOSEONG RIEUL-TIKEUT
+             4354:  4376    ,   // HANGUL CHOSEONG RIEUL-NIEUN
+             4357:  4377    ,   // HANGUL CHOSEONG SSANGRIEUL
+             4356: 43367    ,   // HANGUL CHOSEONG RIEUL-SSANGTIKEUT
+             4359: 43369    ,   // HANGUL CHOSEONG RIEUL-PIEUP
+             4358: 43368    ,   // HANGUL CHOSEONG RIEUL-MIEUM
+             4361: 43372    ,   // HANGUL CHOSEONG RIEUL-SIOS
+             4360: 43370    ,   // HANGUL CHOSEONG RIEUL-SSANGPIEUP
+             4395: 43371    ,   // HANGUL CHOSEONG RIEUL-KAPYEOUNPIEUP
+             4364: 43373    ,   // HANGUL CHOSEONG RIEUL-CIEUC
+             4367: 43374    ,   // HANGUL CHOSEONG RIEUL-KHIEUKH
+             4370:  4378  } ,   // HANGUL CHOSEONG RIEUL-HIEUH
+    4359: {  4352:  4382    ,   // HANGUL CHOSEONG PIEUP-KIYEOK
+             4355:  4384    ,   // HANGUL CHOSEONG PIEUP-TIKEUT
+             4354:  4383    ,   // HANGUL CHOSEONG PIEUP-NIEUN
+             4359:  4360    ,   // HANGUL CHOSEONG SSANGPIEUP
+             4361:  4385    ,   // HANGUL CHOSEONG PIEUP-SIOS
+             4362:  4389    ,   // HANGUL CHOSEONG PIEUP-SSANGSIOS
+             4397:  4386    ,   // HANGUL CHOSEONG PIEUP-SIOS-KIYEOK
+             4364:  4391    ,   // HANGUL CHOSEONG PIEUP-CIEUC
+             4367: 43379    ,   // HANGUL CHOSEONG PIEUP-KHIEUKH
+             4366:  4392    ,   // HANGUL CHOSEONG PIEUP-CHIEUCH
+             4369:  4394    ,   // HANGUL CHOSEONG PIEUP-PHIEUPH
+             4368:  4393    ,   // HANGUL CHOSEONG PIEUP-THIEUTH
+             4370: 43380    ,   // HANGUL CHOSEONG PIEUP-HIEUH
+             4399:  4387    ,   // HANGUL CHOSEONG PIEUP-SIOS-TIKEUT
+             4406:  4390    ,   // HANGUL CHOSEONG PIEUP-SIOS-CIEUC
+             4409: 43378    ,   // HANGUL CHOSEONG PIEUP-SIOS-THIEUTH
+             4402:  4388  } ,   // HANGUL CHOSEONG PIEUP-SIOS-PIEUP
+    4358: {  4361: 43377    ,   // HANGUL CHOSEONG MIEUM-SIOS
+             4352: 43375    ,   // HANGUL CHOSEONG MIEUM-KIYEOK
+             4355: 43376    ,   // HANGUL CHOSEONG MIEUM-TIKEUT
+             4359:  4380  } ,   // HANGUL CHOSEONG MIEUM-PIEUP
+    4361: {  4352:  4397    ,   // HANGUL CHOSEONG SIOS-KIYEOK
+             4355:  4399    ,   // HANGUL CHOSEONG SIOS-TIKEUT
+             4354:  4398    ,   // HANGUL CHOSEONG SIOS-NIEUN
+             4357:  4400    ,   // HANGUL CHOSEONG SIOS-RIEUL
+             4359:  4402    ,   // HANGUL CHOSEONG SIOS-PIEUP
+             4358:  4401    ,   // HANGUL CHOSEONG SIOS-MIEUM
+             4361:  4362    ,   // HANGUL CHOSEONG SSANGSIOS
+             4363:  4405    ,   // HANGUL CHOSEONG SIOS-IEUNG
+             4362:  4404    ,   // HANGUL CHOSEONG SIOS-SSANGSIOS
+             4364:  4406    ,   // HANGUL CHOSEONG SIOS-CIEUC
+             4367:  4408    ,   // HANGUL CHOSEONG SIOS-KHIEUKH
+             4366:  4407    ,   // HANGUL CHOSEONG SIOS-CHIEUCH
+             4369:  4410    ,   // HANGUL CHOSEONG SIOS-PHIEUPH
+             4368:  4409    ,   // HANGUL CHOSEONG SIOS-THIEUTH
+             4370:  4411    ,   // HANGUL CHOSEONG SIOS-HIEUH
+             4382:  4403  } ,   // HANGUL CHOSEONG SIOS-PIEUP-KIYEOK
+    4363: {  4352:  4417    ,   // HANGUL CHOSEONG IEUNG-KIYEOK
+             4355:  4418    ,   // HANGUL CHOSEONG IEUNG-TIKEUT
+             4357: 43382    ,   // HANGUL CHOSEONG IEUNG-RIEUL
+             4359:  4420    ,   // HANGUL CHOSEONG IEUNG-PIEUP
+             4358:  4419    ,   // HANGUL CHOSEONG IEUNG-MIEUM
+             4361:  4421    ,   // HANGUL CHOSEONG IEUNG-SIOS
+             4363:  4423    ,   // HANGUL CHOSEONG SSANGIEUNG
+             4364:  4424    ,   // HANGUL CHOSEONG IEUNG-CIEUC
+             4416:  4422    ,   // HANGUL CHOSEONG IEUNG-PANSIOS
+             4366:  4425    ,   // HANGUL CHOSEONG IEUNG-CHIEUCH
+             4369:  4427    ,   // HANGUL CHOSEONG IEUNG-PHIEUPH
+             4368:  4426    ,   // HANGUL CHOSEONG IEUNG-THIEUTH
+             4370: 43383  } ,   // HANGUL CHOSEONG IEUNG-HIEUH
+    4362: {  4359: 43381  } ,   // HANGUL CHOSEONG SSANGSIOS-PIEUP
+    4365: {  4370: 43384  } ,   // HANGUL CHOSEONG SSANGCIEUC-HIEUH
+    4364: {  4363:  4429    ,   // HANGUL CHOSEONG CIEUC-IEUNG
+             4364:  4365  } ,   // HANGUL CHOSEONG SSANGCIEUC
+    4366: {  4370:  4435    ,   // HANGUL CHOSEONG CHIEUCH-HIEUH
+             4367:  4434  } ,   // HANGUL CHOSEONG CHIEUCH-KHIEUKH
+    4369: {  4370: 43386    ,   // HANGUL CHOSEONG PHIEUPH-HIEUH
+             4359:  4438  } ,   // HANGUL CHOSEONG PHIEUPH-PIEUP
+    4368: {  4368: 43385  } ,   // HANGUL CHOSEONG SSANGTHIEUTH
+    4370: {  4361: 43387    ,   // HANGUL CHOSEONG HIEUH-SIOS
+             4370:  4440  } ,   // HANGUL CHOSEONG SSANGHIEUH
+    4441: {  4441: 43388  } ,   // HANGUL CHOSEONG SSANGYEORINHIEUH
+    4402: {  4352:  4403    ,   // HANGUL CHOSEONG SIOS-PIEUP-KIYEOK
+             4402: 43381  } ,   // HANGUL CHOSEONG SSANGSIOS-PIEUP
 };
-var ssangJongseong = {
-    4540 : 4590, // 'HANGUL JONGSEONG IEUNG'  => 'HANGUL JONGSEONG SSANGIEUNG'  
-    4520 : 4521, // 'HANGUL JONGSEONG KIYEOK' => 'HANGUL JONGSEONG SSANGKIYEOK' 
-    4527 : 4560, // 'HANGUL JONGSEONG RIEUL'  => 'HANGUL JONGSEONG SSANGRIEUL'  
-    4538 : 4539  // 'HANGUL JONGSEONG SIOS'   => 'HANGUL JONGSEONG SSANGSIOS'   
+var doubleJongseongMap = {
+    4520: {  4546:  4606    ,     // HANGUL JONGSEONG KIYEOK-HIEUH
+             4583:  4548    ,     // HANGUL JONGSEONG KIYEOK-SIOS-KIYEOK
+             4520:  4521    ,     // HANGUL JONGSEONG SSANGKIYEOK
+             4523:  4602    ,     // HANGUL JONGSEONG KIYEOK-NIEUN
+             4527:  4547    ,     // HANGUL JONGSEONG KIYEOK-RIEUL
+             4536:  4603    ,     // HANGUL JONGSEONG KIYEOK-PIEUP
+             4538:  4522    ,     // HANGUL JONGSEONG KIYEOK-SIOS
+             4543:  4605    ,     // HANGUL JONGSEONG KIYEOK-KHIEUKH
+             4542:  4604  } ,     // HANGUL JONGSEONG KIYEOK-CHIEUCH
+    4523: {  4544:  4553    ,     // HANGUL JONGSEONG NIEUN-THIEUTH
+             4546:  4525    ,     // HANGUL JONGSEONG NIEUN-HIEUH
+             4520:  4549    ,     // HANGUL JONGSEONG NIEUN-KIYEOK
+             4523:  4607    ,     // HANGUL JONGSEONG SSANGNIEUN
+             4527: 55243    ,     // HANGUL JONGSEONG NIEUN-RIEUL
+             4526:  4550    ,     // HANGUL JONGSEONG NIEUN-TIKEUT
+             4538:  4551    ,     // HANGUL JONGSEONG NIEUN-SIOS
+             4541:  4524    ,     // HANGUL JONGSEONG NIEUN-CIEUC
+             4587:  4552    ,     // HANGUL JONGSEONG NIEUN-PANSIOS
+             4542: 55244  } ,     // HANGUL JONGSEONG NIEUN-CHIEUCH
+    4522: {  4520:  4548  } ,     // HANGUL JONGSEONG KIYEOK-SIOS-KIYEOK
+    4527: {  4521: 55253    ,     // HANGUL JONGSEONG RIEUL-SSANGKIYEOK
+             4520:  4528    ,     // HANGUL JONGSEONG RIEUL-KIYEOK
+             4523:  4557    ,     // HANGUL JONGSEONG RIEUL-NIEUN
+             4522:  4556    ,     // HANGUL JONGSEONG RIEUL-KIYEOK-SIOS
+             4527:  4560    ,     // HANGUL JONGSEONG SSANGRIEUL
+             4526:  4558    ,     // HANGUL JONGSEONG RIEUL-TIKEUT
+             4535:  4529    ,     // HANGUL JONGSEONG RIEUL-MIEUM
+             4537:  4563    ,     // HANGUL JONGSEONG RIEUL-PIEUP-SIOS
+             4536:  4530    ,     // HANGUL JONGSEONG RIEUL-PIEUP
+             4539:  4566    ,     // HANGUL JONGSEONG RIEUL-SSANGSIOS
+             4538:  4531    ,     // HANGUL JONGSEONG RIEUL-SIOS
+             4543:  4568    ,     // HANGUL JONGSEONG RIEUL-KHIEUKH
+             4545:  4533    ,     // HANGUL JONGSEONG RIEUL-PHIEUPH
+             4544:  4532    ,     // HANGUL JONGSEONG RIEUL-THIEUTH
+             4546:  4534    ,     // HANGUL JONGSEONG RIEUL-HIEUH
+             4570:  4561    ,     // HANGUL JONGSEONG RIEUL-MIEUM-KIYEOK
+             4573:  4562    ,     // HANGUL JONGSEONG RIEUL-MIEUM-SIOS
+             4577: 55256    ,     // HANGUL JONGSEONG RIEUL-MIEUM-HIEUH
+             4581:  4564    ,     // HANGUL JONGSEONG RIEUL-PIEUP-HIEUH
+             4580: 55258    ,     // HANGUL JONGSEONG RIEUL-PIEUP-PHIEUPH
+             4582:  4565    ,     // HANGUL JONGSEONG RIEUL-KAPYEOUNPIEUP
+             4587:  4567    ,     // HANGUL JONGSEONG RIEUL-PANSIOS
+             4592: 55259    ,     // HANGUL JONGSEONG RIEUL-YESIEUNG
+             4601:  4569    ,     // HANGUL JONGSEONG RIEUL-YEORINHIEUH
+             4606: 55254  } ,     // HANGUL JONGSEONG RIEUL-KIYEOK-HIEUH
+    4526: {  4544: 55252    ,     // HANGUL JONGSEONG TIKEUT-THIEUTH
+             4583: 55249    ,     // HANGUL JONGSEONG TIKEUT-SIOS-KIYEOK
+             4520:  4554    ,     // HANGUL JONGSEONG TIKEUT-KIYEOK
+             4527:  4555    ,     // HANGUL JONGSEONG TIKEUT-RIEUL
+             4526: 55245    ,     // HANGUL JONGSEONG SSANGTIKEUT
+             4536: 55247    ,     // HANGUL JONGSEONG TIKEUT-PIEUP
+             4538: 55248    ,     // HANGUL JONGSEONG TIKEUT-SIOS
+             4541: 55250    ,     // HANGUL JONGSEONG TIKEUT-CIEUC
+             4542: 55251  } ,     // HANGUL JONGSEONG TIKEUT-CHIEUCH
+    4529: {  4520:  4561    ,     // HANGUL JONGSEONG RIEUL-MIEUM-KIYEOK
+             4538:  4562    ,     // HANGUL JONGSEONG RIEUL-MIEUM-SIOS
+             4546: 55256  } ,     // HANGUL JONGSEONG RIEUL-MIEUM-HIEUH
+    4528: {  4538:  4556    ,     // HANGUL JONGSEONG RIEUL-KIYEOK-SIOS
+             4546: 55254  } ,     // HANGUL JONGSEONG RIEUL-KIYEOK-HIEUH
+    4530: {  4545: 55258    ,     // HANGUL JONGSEONG RIEUL-PIEUP-PHIEUPH
+             4538:  4563    ,     // HANGUL JONGSEONG RIEUL-PIEUP-SIOS
+             4546:  4564    ,     // HANGUL JONGSEONG RIEUL-PIEUP-HIEUH
+             4526: 55257  } ,     // HANGUL JONGSEONG RIEUL-PIEUP-TIKEUT
+    4535: {  4546:  4577    ,     // HANGUL JONGSEONG MIEUM-HIEUH
+             4520:  4570    ,     // HANGUL JONGSEONG MIEUM-KIYEOK
+             4523: 55262    ,     // HANGUL JONGSEONG MIEUM-NIEUN
+             4527:  4571    ,     // HANGUL JONGSEONG MIEUM-RIEUL
+             4535: 55264    ,     // HANGUL JONGSEONG SSANGMIEUM
+             4537: 55265    ,     // HANGUL JONGSEONG MIEUM-PIEUP-SIOS
+             4536:  4572    ,     // HANGUL JONGSEONG MIEUM-PIEUP
+             4539:  4574    ,     // HANGUL JONGSEONG MIEUM-SSANGSIOS
+             4538:  4573    ,     // HANGUL JONGSEONG MIEUM-SIOS
+             4541: 55266    ,     // HANGUL JONGSEONG MIEUM-CIEUC
+             4587:  4575    ,     // HANGUL JONGSEONG MIEUM-PANSIOS
+             4607: 55263    ,     // HANGUL JONGSEONG MIEUM-SSANGNIEUN
+             4542:  4576  } ,     // HANGUL JONGSEONG MIEUM-CHIEUCH
+    4537: {  4526: 55271  } ,     // HANGUL JONGSEONG PIEUP-SIOS-TIKEUT
+    4536: {  4545:  4580    ,     // HANGUL JONGSEONG PIEUP-PHIEUPH
+             4546:  4581    ,     // HANGUL JONGSEONG PIEUP-HIEUH
+             4584: 55271    ,     // HANGUL JONGSEONG PIEUP-SIOS-TIKEUT
+             4527:  4579    ,     // HANGUL JONGSEONG PIEUP-RIEUL
+             4526: 55267    ,     // HANGUL JONGSEONG PIEUP-TIKEUT
+             4533: 55268    ,     // HANGUL JONGSEONG PIEUP-RIEUL-PHIEUPH
+             4535: 55269    ,     // HANGUL JONGSEONG PIEUP-MIEUM
+             4536: 55270    ,     // HANGUL JONGSEONG SSANGPIEUP
+             4538:  4537    ,     // HANGUL JONGSEONG PIEUP-SIOS
+             4541: 55272    ,     // HANGUL JONGSEONG PIEUP-CIEUC
+             4542: 55273  } ,     // HANGUL JONGSEONG PIEUP-CHIEUCH
+    4539: {  4520: 55276    ,     // HANGUL JONGSEONG SSANGSIOS-KIYEOK
+             4526: 55277  } ,     // HANGUL JONGSEONG SSANGSIOS-TIKEUT
+    4538: {  4544: 55281    ,     // HANGUL JONGSEONG SIOS-THIEUTH
+             4546: 55282    ,     // HANGUL JONGSEONG SIOS-HIEUH
+             4582: 55275    ,     // HANGUL JONGSEONG SIOS-KAPYEOUNPIEUP
+             4520:  4583    ,     // HANGUL JONGSEONG SIOS-KIYEOK
+             4587: 55278    ,     // HANGUL JONGSEONG SIOS-PANSIOS
+             4527:  4585    ,     // HANGUL JONGSEONG SIOS-RIEUL
+             4526:  4584    ,     // HANGUL JONGSEONG SIOS-TIKEUT
+             4535: 55274    ,     // HANGUL JONGSEONG SIOS-MIEUM
+             4536:  4586    ,     // HANGUL JONGSEONG SIOS-PIEUP
+             4538:  4539    ,     // HANGUL JONGSEONG SSANGSIOS
+             4541: 55279    ,     // HANGUL JONGSEONG SIOS-CIEUC
+             4542: 55280  } ,     // HANGUL JONGSEONG SIOS-CHIEUCH
+    4541: {  4536: 55287    ,     // HANGUL JONGSEONG CIEUC-PIEUP
+             4541: 55289  } ,     // HANGUL JONGSEONG SSANGCIEUC
+    4540: {  4521:  4589    ,     // HANGUL JONGSEONG IEUNG-SSANGKIYEOK
+             4520:  4588    ,     // HANGUL JONGSEONG IEUNG-KIYEOK
+             4540:  4590    ,     // HANGUL JONGSEONG SSANGIEUNG
+             4543:  4591  } ,     // HANGUL JONGSEONG IEUNG-KHIEUKH
+    4545: {  4536:  4595    ,     // HANGUL JONGSEONG PHIEUPH-PIEUP
+             4538: 55290    ,     // HANGUL JONGSEONG PHIEUPH-SIOS
+             4544: 55291  } ,     // HANGUL JONGSEONG PHIEUPH-THIEUTH
+    4546: {  4536:  4600    ,     // HANGUL JONGSEONG HIEUH-PIEUP
+             4523:  4597    ,     // HANGUL JONGSEONG HIEUH-NIEUN
+             4535:  4599    ,     // HANGUL JONGSEONG HIEUH-MIEUM
+             4527:  4598  } ,     // HANGUL JONGSEONG HIEUH-RIEUL
+    4558: {  4546:  4559  } ,     // HANGUL JONGSEONG RIEUL-TIKEUT-HIEUH
+    4560: {  4543: 55255  } ,     // HANGUL JONGSEONG SSANGRIEUL-KHIEUKH
+    4569: {  4546: 55260  } ,     // HANGUL JONGSEONG RIEUL-YEORINHIEUH-HIEUH
+    4568: {  4568: 55255  } ,     // HANGUL JONGSEONG SSANGRIEUL-KHIEUKH
+    4572: {  4538: 55265  } ,     // HANGUL JONGSEONG MIEUM-PIEUP-SIOS
+    4579: {  4545: 55268  } ,     // HANGUL JONGSEONG PIEUP-RIEUL-PHIEUPH
+    4583: {  4583: 55276  } ,     // HANGUL JONGSEONG SSANGSIOS-KIYEOK
+    4584: {  4584: 55277  } ,     // HANGUL JONGSEONG SSANGSIOS-TIKEUT
+    4587: {  4536: 55283    ,     // HANGUL JONGSEONG PANSIOS-PIEUP
+             4582: 55284  } ,     // HANGUL JONGSEONG PANSIOS-KAPYEOUNPIEUP
+    4592: {  4546: 55286    ,     // HANGUL JONGSEONG YESIEUNG-HIEUH
+             4587:  4594    ,     // HANGUL JONGSEONG YESIEUNG-PANSIOS
+             4538:  4593    ,     // HANGUL JONGSEONG YESIEUNG-SIOS
+             4535: 55285  } ,     // HANGUL JONGSEONG YESIEUNG-MIEUM
+};
+var doubleConsonantMap = {
+    12609: {  12610: 12654    ,   // HANGUL LETTER MIEUM-PIEUP
+              12613: 12655  } ,   // HANGUL LETTER MIEUM-SIOS
+    12640: {  12643: 12684    ,   // HANGUL LETTER YU-I
+              12629: 12682    ,   // HANGUL LETTER YU-YEO
+              12630: 12683  } ,   // HANGUL LETTER YU-YE
+    12610: {  12610: 12611    ,   // HANGUL LETTER SSANGPIEUP
+              12613: 12612    ,   // HANGUL LETTER PIEUP-SIOS
+              12616: 12662    ,   // HANGUL LETTER PIEUP-CIEUC
+              12620: 12663    ,   // HANGUL LETTER PIEUP-THIEUTH
+              12593: 12658    ,   // HANGUL LETTER PIEUP-KIYEOK
+              12599: 12659  } ,   // HANGUL LETTER PIEUP-TIKEUT
+    12613: {  12610: 12669    ,   // HANGUL LETTER SIOS-PIEUP
+              12613: 12614    ,   // HANGUL LETTER SSANGSIOS
+              12616: 12670    ,   // HANGUL LETTER SIOS-CIEUC
+              12593: 12666    ,   // HANGUL LETTER SIOS-KIYEOK
+              12596: 12667    ,   // HANGUL LETTER SIOS-NIEUN
+              12599: 12668  } ,   // HANGUL LETTER SIOS-TIKEUT
+    12612: {  12593: 12660    ,   // HANGUL LETTER PIEUP-SIOS-KIYEOK
+              12599: 12661  } ,   // HANGUL LETTER PIEUP-SIOS-TIKEUT
+    12615: {  12615: 12672  } ,   // HANGUL LETTER SSANGIEUNG
+    12616: {  12616: 12617  } ,   // HANGUL LETTER SSANGCIEUC
+    12622: {  12622: 12677  } ,   // HANGUL LETTER SSANGHIEUH
+    12593: {  12593: 12594    ,   // HANGUL LETTER SSANGKIYEOK
+              12613: 12595  } ,   // HANGUL LETTER KIYEOK-SIOS
+    12596: {  12616: 12597    ,   // HANGUL LETTER NIEUN-CIEUC
+              12613: 12647    ,   // HANGUL LETTER NIEUN-SIOS
+              12596: 12645    ,   // HANGUL LETTER SSANGNIEUN
+              12599: 12646    ,   // HANGUL LETTER NIEUN-TIKEUT
+              12622: 12598  } ,   // HANGUL LETTER NIEUN-HIEUH
+    12599: {  12599: 12600  } ,   // HANGUL LETTER SSANGTIKEUT
+    12601: {  12609: 12603    ,   // HANGUL LETTER RIEUL-MIEUM
+              12610: 12604    ,   // HANGUL LETTER RIEUL-PIEUP
+              12613: 12605    ,   // HANGUL LETTER RIEUL-SIOS
+              12612: 12651    ,   // HANGUL LETTER RIEUL-PIEUP-SIOS
+              12621: 12607    ,   // HANGUL LETTER RIEUL-PHIEUPH
+              12620: 12606    ,   // HANGUL LETTER RIEUL-THIEUTH
+              12622: 12608    ,   // HANGUL LETTER RIEUL-HIEUH
+              12593: 12602    ,   // HANGUL LETTER RIEUL-KIYEOK
+              12595: 12649    ,   // HANGUL LETTER RIEUL-KIYEOK-SIOS
+              12599: 12650  } ,   // HANGUL LETTER RIEUL-TIKEUT
+    12635: {  12625: 12679    ,   // HANGUL LETTER YO-YA
+              12643: 12681    ,   // HANGUL LETTER YO-I
+              12626: 12680  } ,   // HANGUL LETTER YO-YAE
+    12602: {  12613: 12649  } ,   // HANGUL LETTER RIEUL-KIYEOK-SIOS
+    12604: {  12613: 12651  } ,   // HANGUL LETTER RIEUL-PIEUP-SIOS
 };
 var doubleJungseongMap = {
     4467: { 4469: 4468 },  // EU +  I = YI
@@ -979,71 +1241,84 @@ letter.attachIfHangul = function(word, suffix) {
         return suffix;
     }
     var tail = word[word.length-1];
+    var a = tail;
+    var b = suffix[0];
 
     // just paste two string if not hangul
-    if (!letter.isHangul(tail) || !letter.isHangul(suffix[0])) {
+    if (!letter.isHangul(a) || !letter.isHangul(b)) {
         return word + suffix;
     }
 
-    if (tail === suffix[0]) {
-        // choseong(3) + choseong(3)
-        if (letter.isHangul3Choseong(tail) && ssangChoseong[ord(tail)]) {
-            return word.substring(0,word.length-1) + chr(ssangChoseong[ord(tail)]);
-        }
-        // jongseong(3) + jongseong(3)
-        else if (letter.isHangul3Jongseong(tail) && ssangJongseong[ord(tail)]) {
-            return word.substring(0,word.length-1) + chr(ssangJongseong[ord(tail)]);
+    var doubleCode;
+    // choseong(3) + choseong(3)
+    if (letter.isHangul3Choseong(a) && letter.isHangul3Choseong(b)) {
+        doubleCode = (doubleChoseongMap[ord(a)] || {})[ord(b)];
+        if (doubleCode) {
+            return word.substring(0,word.length-1) + chr(doubleCode);
         }
     }
+    // jongseong(3) + jongseong(3)
+    else if (letter.isHangul3Jongseong(a) && letter.isHangul3Jongseong(b)) {
+        doubleCode = (doubleJongseongMap[ord(a)] || {})[ord(b)];
+        if (doubleCode) {
+            return word.substring(0,word.length-1) + chr(doubleCode);
+        }
+    } 
+    // consonant(2) + consonant(2)
+    else if (letter.isHangul2Consonant(a) && letter.isHangul2Consonant(b)) {
+        doubleCode = (doubleConsonantMap[ord(a)] || {})[ord(b)];
+        if (doubleCode) {
+            return word.substring(0,word.length-1) + chr(doubleCode);
+        }
+    }
+
     // jungseong(3) + jungseong(3)
-    if (letter.isHangul3Jungseong(tail) && letter.isHangul3Jungseong(suffix[0])) {
-        var double = (doubleJungseongMap[ord(tail)] || {})[ord(suffix[0])];
+    if (letter.isHangul3Jungseong(a) && letter.isHangul3Jungseong(b)) {
+        var double = (doubleJungseongMap[ord(a)] || {})[ord(b)];
         if (double) {
             return word.substring(0,word.length-1) + chr(double);
         }
     }
 
     // choseong(3) + jungseong(3)
-    if (letter.isHangul3Choseong(tail) && letter.isHangul3Jungseong(suffix[0])) {
-        return word.substring(0,word.length-1) + letter.merge(tail, suffix[0]);
+    if (letter.isHangul3Choseong(a) && letter.isHangul3Jungseong(b)) {
+        return word.substring(0,word.length-1) + letter.merge(a, b);
     }
     // reverse: jungseong(3) + choseong(3)
-    else if (letter.isHangul3Choseong(suffix[0]) && letter.isHangul3Jungseong(tail)) {
-        return word.substring(0,word.length-1) + letter.merge(suffix[0], tail);
+    else if (letter.isHangul3Choseong(b) && letter.isHangul3Jungseong(a)) {
+        return word.substring(0,word.length-1) + letter.merge(b, a);
     }
     // consonant + vowel(2)
-    else if (letter.isHangul2Consonant(tail) && letter.isHangul2Vowel(suffix[0])) {
-        return word.substring(0,word.length-1) + letter.merge(tail, suffix[0]);
+    else if (letter.isHangul2Consonant(a) && letter.isHangul2Vowel(b)) {
+        return word.substring(0,word.length-1) + letter.merge(a, b);
     } 
     // jongsongless syllable
-    else if (letter.isHangulSyllable(tail) && !letter.hasJongseong(tail)) {
-        // ... + jungseong(3)
-        if (letter.isHangul3Jungseong(suffix[0])) {
-            var splits = letter.split(tail);
+    else if (letter.isHangulSyllable(a) && !letter.hasJongseong(a)) {
+        // ... + [jungseong(3)|vowel(2)]
+        if (letter.isHangul3Jungseong(b) || letter.isHangul2Vowel(b)) {
+            b = letter.vowelToJungseong(b);
+            
+            var splits = letter.split(a);
             var lastJungseong = splits[1];
-            var double = (doubleJungseongMap[ord(lastJungseong)] || {})[ord(suffix[0])];
-            if (double) {
-                var prevSyllable = letter.merge(splits[0], chr(double));
-                return word.substring(0,word.length-1) + prevSyllable;
+            var doubleJungseongCode = (doubleJungseongMap[ord(lastJungseong)] || {})[ord(b)];
+            if (doubleJungseongCode) {
+                var newSyllable = letter.merge(splits[0], chr(doubleJungseongCode));
+                return word.substring(0,word.length-1) + newSyllable;
             }
         }
-        // ... + jongseong(3)
-        else if (letter.isHangul3Jongseong(suffix[0])) {
-            return word.substring(0,word.length-1) + letter.merge(tail, tail, suffix[0]);
+        // ... + [jongseong(3)|consonant(2)]
+        else if (letter.isHangul3Jongseong(b) || letter.isHangul2Consonant(b)) {
+            return word.substring(0,word.length-1) + letter.merge(a, a, b);
         }
-        // ... + consonant(2)
-        else if (letter.isHangul2Consonant(suffix[0])) {
-            return word.substring(0,word.length-1) + letter.merge(tail, tail, suffix[0]);
-        } 
     }
     // jongsongful syllable + vowel(2)
-    else if (letter.isHangulSyllable(tail) && letter.hasJongseong(tail) && letter.isHangul2Vowel(suffix[0])) {
-        var splits = letter.split(tail);
+    else if (letter.isHangulSyllable(a) && letter.hasJongseong(a) && letter.isHangul2Vowel(b)) {
+        var splits = letter.split(a);
         var prevSyllable = letter.merge(splits[0], splits[1]);
-        return word.substring(0,word.length-1) + prevSyllable + letter.merge(splits[2], suffix[0]);
+        return word.substring(0,word.length-1) + prevSyllable + letter.merge(splits[2], b);
     } 
     
-    //
+    // default
     return word + suffix;
 };
 
