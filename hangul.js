@@ -1244,12 +1244,13 @@ letter.attachIfHangul = function(word, suffix) {
     var a = tail;
     var b = suffix[0];
 
+    var doubleCode;
+    var splits;
+
     // just paste two string if not hangul
     if (!letter.isHangul(a) || !letter.isHangul(b)) {
         return word + suffix;
     }
-
-    var doubleCode;
     // choseong(3) + choseong(3)
     if (letter.isHangul3Choseong(a) && letter.isHangul3Choseong(b)) {
         doubleCode = (doubleChoseongMap[ord(a)] || {})[ord(b)];
@@ -1298,24 +1299,37 @@ letter.attachIfHangul = function(word, suffix) {
         if (letter.isHangul3Jungseong(b) || letter.isHangul2Vowel(b)) {
             b = letter.vowelToJungseong(b);
             
-            var splits = letter.split(a);
+            splits = letter.split(a);
             var lastJungseong = splits[1];
-            var doubleJungseongCode = (doubleJungseongMap[ord(lastJungseong)] || {})[ord(b)];
-            if (doubleJungseongCode) {
-                var newSyllable = letter.merge(splits[0], chr(doubleJungseongCode));
+            doubleCode = (doubleJungseongMap[ord(lastJungseong)] || {})[ord(b)];
+            if (doubleCode) {
+                var newSyllable = letter.merge(splits[0], chr(doubleCode));
                 return word.substring(0,word.length-1) + newSyllable;
             }
         }
         // ... + [jongseong(3)|consonant(2)]
         else if (letter.isHangul3Jongseong(b) || letter.isHangul2Consonant(b)) {
+            b = letter.consonantToJongseong(b);
             return word.substring(0,word.length-1) + letter.merge(a, a, b);
         }
     }
-    // jongsongful syllable + vowel(2)
-    else if (letter.isHangulSyllable(a) && letter.hasJongseong(a) && letter.isHangul2Vowel(b)) {
-        var splits = letter.split(a);
-        var prevSyllable = letter.merge(splits[0], splits[1]);
-        return word.substring(0,word.length-1) + prevSyllable + letter.merge(splits[2], b);
+    // jongsongful syllable
+    else if (letter.isHangulSyllable(a) && letter.hasJongseong(a)) {
+        // ... + vowel(2)
+        if (letter.isHangul2Vowel(b)) {
+            splits = letter.split(a);
+            var prevSyllable = letter.merge(splits[0], splits[1]);
+            return word.substring(0,word.length-1) + prevSyllable + letter.merge(splits[2], b);
+        } 
+        // ... + [jongseong(3)|consonant(2)]
+        else if (letter.isHangul3Jongseong(b) || letter.isHangul2Consonant(b)) {
+            b = letter.consonantToJongseong(b);
+            splits = letter.split(a);
+            doubleCode = doubleJongseongMap[ord(splits[2]) || {}][ord(b)];
+            if (doubleCode) {
+                return word.substring(0,word.length-1) + letter.merge(splits[0], splits[1], chr(doubleCode));
+            }
+        }
     } 
     
     // default
